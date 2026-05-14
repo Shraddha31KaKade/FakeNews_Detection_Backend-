@@ -14,3 +14,4 @@ lime
 torch
 transformers
 python-dotenv
+httpx

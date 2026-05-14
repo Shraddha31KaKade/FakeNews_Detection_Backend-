@@ -9,13 +9,14 @@ from app.models.user_model import User
 router = APIRouter(tags=["Prediction"])
 
 @router.post("/predict", response_model=PredictionResponse)
-def predict(
+async def predict(
     request: PredictionRequest, 
     db: Session = Depends(get_db),
-    current_user: Optional[User] = Depends(auth_controller.get_current_user)
+    current_user: Optional[User] = Depends(auth_controller.get_optional_user)
 ):
     """
-    Analyze news text. If logged in, the result is automatically saved to your history.
+    Analyze news text. Guests can use this anonymously. 
+    If logged in, the result is automatically saved to your history.
     """
     user_id = current_user.id if current_user else None
-    return prediction_controller.process_prediction(request.text, db, user_id)
+    return await prediction_controller.process_prediction(request.text, db, user_id)

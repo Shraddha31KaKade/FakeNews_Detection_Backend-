@@ -6,7 +6,7 @@ class History(Base):
     __tablename__ = "history"
 
     id = Column(Integer, primary_key=True, index=True)
-    user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
     text = Column(String, nullable=False)
     prediction = Column(String, nullable=False) # "FAKE" or "REAL"
     confidence = Column(Float, nullable=False)

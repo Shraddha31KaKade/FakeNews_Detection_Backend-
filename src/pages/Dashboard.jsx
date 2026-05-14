@@ -76,8 +76,12 @@ const Dashboard = () => {
                   <p className="line-clamp-2 text-sm text-gray-800">{item.text}</p>
                   <p className="mt-1 text-xs text-gray-400">{new Date(item.date).toLocaleDateString()}</p>
                 </div>
-                <div className={`rounded-full px-3 py-1 text-xs font-bold ${item.prediction === 'FAKE' ? 'bg-red-50 text-red-600' : 'bg-green-50 text-green-600'}`}>
-                  {item.prediction}
+                <div className={`rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-wider ${
+                  (item.finalDecision || item.prediction) === 'FAKE' ? 'bg-red-600 text-white shadow-sm' : 
+                  (item.finalDecision || item.prediction) === 'REAL' ? 'bg-emerald-600 text-white shadow-sm' : 
+                  'bg-amber-500 text-white shadow-sm'
+                }`}>
+                  {item.finalDecision || item.prediction}
                 </div>
               </div>
             ))}

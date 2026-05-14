@@ -18,10 +18,10 @@ app.include_router(auth_routes.router)
 app.include_router(prediction_routes.router)
 app.include_router(history_routes.router)
 
-# Configure CORS for React frontend
+# Configure CORS for React frontend (Development: Allow All)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://localhost:5174"], # Default Vite ports
+    allow_origins=["*"], # Allow any origin for local dev
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

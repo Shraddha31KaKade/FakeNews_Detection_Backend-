@@ -61,3 +61,28 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
     if user is None:
         raise credentials_exception
     return user
+
+from typing import Optional
+from fastapi import Request
+
+async def get_optional_user(db: Session = Depends(get_db), request: Request = None):
+    """
+    Dependency that returns the user if token is valid, otherwise returns None.
+    Does NOT raise 401 if token is missing.
+    """
+    if not request:
+        return None
+        
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        return None
+    
+    token = auth_header.split(" ")[1]
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email: str = payload.get("sub")
+        if email is None:
+            return None
+        return db.query(User).filter(User.email == email).first()
+    except JWTError:
+        return None
